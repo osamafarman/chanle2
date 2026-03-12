@@ -7,653 +7,285 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #050810;
-  --surface: #0a0f1a;
-  --surface2: #0f1825;
-  --surface3: #141f30;
-  --border: #1a2840;
-  --border2: #243550;
-  --amber: #f0a500;
-  --amber-dim: #a07000;
-  --red: #ff2244;
-  --red-dim: #7a0f20;
-  --green: #00e676;
-  --green-dim: #00552b;
-  --blue: #2979ff;
-  --text: #d8e4f0;
-  --text2: #8a9baf;
-  --text3: #4a5a6a;
-  --mono: 'JetBrains Mono', monospace;
-  --arabic: 'Cairo', sans-serif;
+  --bg:#050810; --surface:#0a0f1a; --surface2:#0f1825; --surface3:#141f30;
+  --border:#1a2840; --border2:#243550;
+  --amber:#f0a500; --red:#ff2244; --green:#00e676; --blue:#2979ff;
+  --text:#d8e4f0; --text2:#8a9baf; --text3:#4a5a6a;
+  --mono:'JetBrains Mono',monospace; --ar:'Cairo',sans-serif;
 }
-* { margin:0; padding:0; box-sizing:border-box; }
-html { font-size:14px; }
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--arabic);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-body::before {
-  content:'';
-  position:fixed; top:0; left:0; right:0; bottom:0;
-  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,20,50,.03) 2px, rgba(0,20,50,.03) 4px);
-  pointer-events:none; z-index:0;
-}
+*{margin:0;padding:0;box-sizing:border-box}
+html{font-size:14px}
+body{background:var(--bg);color:var(--text);font-family:var(--ar);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,20,50,.03) 2px,rgba(0,20,50,.03) 4px);pointer-events:none;z-index:0}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:var(--surface)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
 
-/* ─── SCROLLBAR ─── */
-::-webkit-scrollbar { width:4px; height:4px; }
-::-webkit-scrollbar-track { background:var(--surface); }
-::-webkit-scrollbar-thumb { background:var(--border2); border-radius:2px; }
+/* HEADER */
+#header{position:sticky;top:0;z-index:100;background:rgba(5,8,16,.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.hdr-top{display:flex;align-items:center;gap:12px;height:48px;padding:0 14px}
+.logo{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--amber),var(--red));border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.logo-text{font-size:14px;font-weight:900;color:var(--amber)}
+.logo-sub{font-size:9px;color:var(--text3)}
+.live-badge{display:flex;align-items:center;gap:5px;background:rgba(255,34,68,.12);border:1px solid rgba(255,34,68,.3);padding:3px 8px;border-radius:4px;font-size:11px;font-weight:700;color:var(--red);font-family:var(--mono)}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--red);animation:pulse 1.4s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+.ticker-wrap{flex:1;overflow:hidden;height:32px;display:flex;align-items:center;border-inline:1px solid var(--border);padding:0 8px;position:relative}
+.ticker-label{position:absolute;right:0;z-index:2;background:linear-gradient(90deg,transparent,var(--bg) 40%);padding-right:10px;padding-left:40px;font-size:11px;font-weight:700;color:var(--red);white-space:nowrap}
+.ticker-track{display:flex;white-space:nowrap;animation:ticker 70s linear infinite}
+.ticker-item{padding:0 20px;font-size:12px;color:var(--text2);border-left:1px solid var(--border)}
+.ti-src{color:var(--amber);font-size:10px;margin-right:4px}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.clk{flex-shrink:0;text-align:center;font-family:var(--mono);line-height:1.2}
+.clk-t{font-size:18px;font-weight:700;color:var(--amber)}
+.clk-d{font-size:9px;color:var(--text3)}
 
-/* ─── HEADER ─── */
-#header {
-  position:sticky; top:0; z-index:100;
-  background: rgba(5,8,16,.95);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-  padding:0 16px;
-}
-.header-top {
-  display:flex; align-items:center; gap:16px;
-  height:48px;
-}
-.logo {
-  display:flex; align-items:center; gap:8px;
-  flex-shrink:0;
-}
-.logo-icon {
-  width:32px; height:32px;
-  background: linear-gradient(135deg, var(--amber), var(--red));
-  border-radius:6px;
-  display:flex; align-items:center; justify-content:center;
-  font-size:16px;
-}
-.logo-text { font-size:15px; font-weight:900; color:var(--amber); letter-spacing:-0.5px; }
-.logo-sub { font-size:10px; color:var(--text3); font-weight:400; }
+/* PRICES BAR */
+#pbar{background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;overflow-x:auto;height:44px}
+.pi{display:flex;align-items:center;gap:8px;padding:0 14px;height:100%;border-left:1px solid var(--border);flex-shrink:0}
+.pi:first-child{border-right:1px solid var(--border)}
+.pi-lbl{font-size:9px;font-weight:700;color:var(--text3);text-transform:uppercase}
+.pi-val{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--text);transition:color .4s}
+.fu{animation:fu .6s} .fd{animation:fd .6s}
+@keyframes fu{0%,100%{color:var(--text)}50%{color:var(--green);text-shadow:0 0 10px var(--green)}}
+@keyframes fd{0%,100%{color:var(--text)}50%{color:var(--red);text-shadow:0 0 10px var(--red)}}
+#pbtn{margin-right:auto;margin-left:8px;padding:4px 10px;background:transparent;border:1px solid var(--border2);color:var(--text3);font-size:11px;cursor:pointer;border-radius:4px;font-family:var(--ar)}
+#pbtn:hover{border-color:var(--amber);color:var(--amber)}
 
-.live-badge {
-  display:flex; align-items:center; gap:5px;
-  background: rgba(255,34,68,.12);
-  border:1px solid rgba(255,34,68,.3);
-  padding:3px 8px; border-radius:4px;
-  font-size:11px; font-weight:700; color:var(--red);
-  font-family: var(--mono);
-}
-.live-dot {
-  width:7px; height:7px; border-radius:50%;
-  background:var(--red);
-  animation: pulse 1.4s infinite;
-}
-@keyframes pulse {
-  0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.8)}
-}
+/* MAIN */
+#main{padding:10px;display:flex;flex-direction:column;gap:10px}
+.sec-hd{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px 8px 0 0;border-bottom:2px solid var(--amber)}
+.sec-hd h2{font-size:13px;font-weight:700;color:var(--amber)}
+.sec-ctrl{margin-right:auto;display:flex;gap:5px}
+.sbtn{padding:3px 9px;font-size:11px;cursor:pointer;background:var(--surface3);border:1px solid var(--border2);color:var(--text2);border-radius:4px;font-family:var(--ar);transition:all .2s}
+.sbtn:hover,.sbtn.act{background:var(--amber);color:#000;border-color:var(--amber);font-weight:700}
 
-.ticker-wrap {
-  flex:1; overflow:hidden; position:relative;
-  height:32px; display:flex; align-items:center;
-  border-right: 1px solid var(--border);
-  border-left: 1px solid var(--border);
-  padding:0 8px;
-}
-.ticker-label {
-  position:absolute; right:0; z-index:2;
-  background: linear-gradient(90deg, transparent, var(--bg) 40%);
-  padding-right:12px; padding-left:40px;
-  font-size:11px; font-weight:700; color:var(--red);
-  white-space:nowrap;
-}
-.ticker-track {
-  display:flex; gap:0; white-space:nowrap;
-  animation: ticker 60s linear infinite;
-}
-.ticker-item {
-  padding:0 20px; font-size:12px; color:var(--text2);
-  border-left: 1px solid var(--border);
-}
-.ticker-item .ti-src { color:var(--amber); font-size:10px; margin-right:4px; }
-@keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+/* STREAMS */
+#sc{background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;padding:10px;display:grid;gap:8px;min-height:60px}
+#sc.c1{grid-template-columns:1fr}
+#sc.c2{grid-template-columns:1fr 1fr}
+#sc.c3{grid-template-columns:1fr 1fr 1fr}
+.sf{position:relative;background:#000;border:1px solid var(--border2);border-radius:6px;overflow:hidden;aspect-ratio:16/9}
+.sf iframe{width:100%;height:100%;border:none;display:block}
+.sov{position:absolute;top:0;right:0;left:0;background:linear-gradient(180deg,rgba(0,0,0,.7),transparent 60%);padding:6px 8px;display:flex;align-items:center;gap:6px;opacity:0;transition:.2s}
+.sf:hover .sov{opacity:1}
+.sov-t{font-size:11px;color:#fff;flex:1}
+.sdel{background:rgba(255,34,68,.7);border:none;color:#fff;width:20px;height:20px;border-radius:50%;cursor:pointer;font-size:12px}
+.sem{grid-column:1/-1;text-align:center;padding:28px;color:var(--text3);font-size:13px}
+.sem span{font-size:30px;display:block;margin-bottom:8px}
+#asb{display:flex;gap:8px;padding:8px 10px;background:var(--surface);border:1px solid var(--border);border-top:none}
+#surl{flex:1;padding:7px 10px;background:var(--surface2);border:1px solid var(--border2);color:var(--text);font-size:12px;border-radius:6px;font-family:var(--ar);direction:ltr;outline:none}
+#surl:focus{border-color:var(--blue)}
+#addsbtn{padding:7px 14px;background:var(--blue);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:700;font-family:var(--ar)}
 
-.clock-block {
-  flex-shrink:0; text-align:center; font-family:var(--mono);
-  line-height:1.2;
-}
-.clock-time { font-size:18px; font-weight:700; color:var(--amber); }
-.clock-date { font-size:10px; color:var(--text3); }
+/* NEWS GRID */
+#ng{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+@media(max-width:1100px){#ng{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){#ng{grid-template-columns:1fr}}
+.nc{display:flex;flex-direction:column;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.nch{padding:9px 12px;display:flex;align-items:center;gap:7px;border-bottom:1px solid var(--border);background:var(--surface2)}
+.nch.ci{border-top:3px solid var(--red)}.nch.cs{border-top:3px solid var(--amber)}.nch.cx{border-top:3px solid var(--green)}
+.nct{font-size:12px;font-weight:800}
+.ci .nct{color:var(--red)}.cs .nct{color:var(--amber)}.cx .nct{color:var(--green)}
+.ncc{font-family:var(--mono);font-size:11px;padding:2px 6px;border-radius:20px;font-weight:700}
+.ci .ncc{background:rgba(255,34,68,.15);color:var(--red)}
+.cs .ncc{background:rgba(240,165,0,.15);color:var(--amber)}
+.cx .ncc{background:rgba(0,230,118,.12);color:var(--green)}
+.rbtn{margin-right:auto;background:transparent;border:none;color:var(--text3);cursor:pointer;font-size:14px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:4px;transition:.2s}
+.rbtn:hover{background:var(--surface3);color:var(--text)}
+.spin{animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.nl{flex:1;overflow-y:auto;background:var(--surface);max-height:560px}
+.ni{padding:9px 12px;border-bottom:1px solid rgba(26,40,64,.5);cursor:pointer;transition:background .15s;animation:si .3s}
+.ni:hover{background:var(--surface2)}
+.ni.nw{border-right:3px solid var(--amber)}
+@keyframes si{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
+.nt{font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.ns{font-size:10px;font-weight:700;padding:1px 5px;border-radius:3px;color:#fff}
+.s-aj{background:#9e2a2b}.s-bbc{background:#b80000}.s-rt{background:#003087}
+.s-reu{background:#ff8000;color:#000}.s-ap{background:#cc0000}.s-o{background:#2a3a4a}
+.ntitle{font-size:13px;font-weight:600;color:var(--text);line-height:1.5;margin-bottom:2px}
+.ntitle a{color:inherit;text-decoration:none}
+.ntitle a:hover{color:var(--amber)}
+.ndesc{font-size:11px;color:var(--text3);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ntr{font-size:11px;color:#00995a;margin-top:3px;line-height:1.5;font-style:italic;padding:4px 6px;background:rgba(0,230,118,.05);border-radius:4px;border-right:2px solid #00995a}
+.lnews{padding:20px;text-align:center;color:var(--text3);font-size:12px}
+.lp{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--amber);animation:pulse 1s infinite;margin-right:6px}
+.nerr{padding:14px;color:var(--red);font-size:12px;text-align:center}
+.nerr small{display:block;font-size:10px;color:var(--text3);margin-top:4px;font-family:var(--mono)}
 
-/* ─── PRICES BAR ─── */
-#prices-bar {
-  background:var(--surface);
-  border-bottom:1px solid var(--border);
-  display:flex; align-items:center; gap:0;
-  overflow-x:auto; padding:0;
-  height:44px;
-}
-.price-item {
-  display:flex; align-items:center; gap:8px;
-  padding:0 16px; height:100%;
-  border-left:1px solid var(--border);
-  flex-shrink:0; cursor:default;
-  transition: background .2s;
-  position:relative;
-}
-.price-item:hover { background: var(--surface2); }
-.price-item:first-child { border-right:1px solid var(--border); }
-.price-label { font-size:10px; font-weight:700; color:var(--text3); text-transform:uppercase; }
-.price-value {
-  font-family:var(--mono); font-size:14px; font-weight:700; color:var(--text);
-  transition: color .4s;
-}
-.price-change {
-  font-family:var(--mono); font-size:11px; font-weight:700;
-}
-.price-change.up { color:var(--green); }
-.price-change.down { color:var(--red); }
-.price-flash-up { animation: flashGreen .6s; }
-.price-flash-down { animation: flashRed .6s; }
-@keyframes flashGreen { 0%,100%{color:var(--text)} 50%{color:var(--green);text-shadow:0 0 12px var(--green)} }
-@keyframes flashRed { 0%,100%{color:var(--text)} 50%{color:var(--red);text-shadow:0 0 12px var(--red)} }
+/* EXTRA ROW */
+#er{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:700px){#er{grid-template-columns:1fr}}
+.panel{border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.ph{padding:9px 14px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800}
+.pb{padding:10px;background:var(--surface)}
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.mc{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:9px}
+.mcl{font-size:9px;color:var(--text3);margin-bottom:2px}
+.mcv{font-family:var(--mono);font-size:15px;font-weight:700}
+.mcs{font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:1px}
 
-.price-loading { color:var(--text3); font-size:11px; font-family:var(--mono); }
-.price-update { font-size:9px; color:var(--text3); font-family:var(--mono); position:absolute; bottom:3px; right:8px; }
+/* TOAST */
+#ta{position:fixed;bottom:20px;left:20px;z-index:9999;display:flex;flex-direction:column;gap:7px;max-width:300px}
+.toast{background:var(--surface2);border:1px solid var(--border2);border-right:3px solid var(--amber);border-radius:8px;padding:9px 13px;animation:ti .3s;font-size:12px}
+@keyframes ti{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:none}}
+.tt{font-weight:700;color:var(--amber);margin-bottom:2px;font-size:11px}
+.tb{color:var(--text2)}
 
-#price-refresh-btn {
-  margin-right:auto; margin-left:8px; padding:4px 10px;
-  background:transparent; border:1px solid var(--border2);
-  color:var(--text3); font-size:11px; cursor:pointer;
-  border-radius:4px; font-family:var(--arabic);
-}
-#price-refresh-btn:hover { border-color:var(--amber); color:var(--amber); }
+/* STATUS BAR */
+#sb{background:var(--surface);border-top:1px solid var(--border);padding:4px 14px;display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:10px;color:var(--text3);flex-wrap:wrap}
+.si2{display:flex;align-items:center;gap:4px}
+.sd{width:6px;height:6px;border-radius:50%}
+.dg{background:var(--green)}.da{background:var(--amber)}.dr{background:var(--red)}.dy{background:var(--text3)}
 
-/* ─── MAIN LAYOUT ─── */
-#main { padding:12px; display:flex; flex-direction:column; gap:12px; }
-
-/* ─── SECTION HEADER ─── */
-.section-head {
-  display:flex; align-items:center; gap:8px;
-  padding:8px 12px;
-  background:var(--surface2);
-  border:1px solid var(--border);
-  border-radius:8px 8px 0 0;
-  border-bottom:2px solid var(--amber);
-}
-.section-head h2 { font-size:13px; font-weight:700; color:var(--amber); }
-.section-head .sec-ctrl { margin-right:auto; display:flex; gap:6px; }
-.sec-btn {
-  padding:3px 10px; font-size:11px; cursor:pointer;
-  background:var(--surface3); border:1px solid var(--border2);
-  color:var(--text2); border-radius:4px; font-family:var(--arabic);
-  transition: all .2s;
-}
-.sec-btn:hover, .sec-btn.active { background:var(--amber); color:#000; border-color:var(--amber); font-weight:700; }
-
-/* ─── STREAMS SECTION ─── */
-#streams-section { position:relative; }
-#streams-head { border-bottom-color:var(--blue); }
-#streams-head h2 { color:#2979ff; }
-
-#streams-container {
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-top:none;
-  border-radius:0 0 8px 8px;
-  padding:12px; display:grid; gap:8px;
-  min-height:80px;
-}
-#streams-container.cols-1 { grid-template-columns:1fr; }
-#streams-container.cols-2 { grid-template-columns:1fr 1fr; }
-#streams-container.cols-3 { grid-template-columns:1fr 1fr 1fr; }
-
-.stream-frame {
-  position:relative; background:#000;
-  border:1px solid var(--border2); border-radius:6px;
-  overflow:hidden; aspect-ratio:16/9;
-}
-.stream-frame iframe { width:100%; height:100%; border:none; display:block; }
-.stream-overlay {
-  position:absolute; top:0; right:0; left:0;
-  background:linear-gradient(180deg,rgba(0,0,0,.7) 0%,transparent 60%);
-  padding:6px 8px; display:flex; align-items:center; gap:6px;
-  opacity:0; transition:opacity .2s;
-}
-.stream-frame:hover .stream-overlay { opacity:1; }
-.stream-title { font-size:11px; color:#fff; font-weight:600; flex:1; }
-.stream-del-btn {
-  background:rgba(255,34,68,.7); border:none; color:#fff;
-  width:20px; height:20px; border-radius:50%; cursor:pointer;
-  font-size:12px; display:flex; align-items:center; justify-content:center;
-}
-
-.stream-empty {
-  grid-column:1/-1; text-align:center; padding:32px;
-  color:var(--text3); font-size:13px;
-}
-.stream-empty span { font-size:32px; display:block; margin-bottom:8px; }
-
-#add-stream-bar {
-  display:flex; gap:8px; padding:8px 12px;
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-top:none;
-}
-#stream-url-input {
-  flex:1; padding:7px 12px;
-  background:var(--surface2); border:1px solid var(--border2);
-  color:var(--text); font-size:12px; border-radius:6px;
-  font-family:var(--arabic); direction:ltr;
-  outline:none;
-}
-#stream-url-input:focus { border-color:var(--blue); }
-#stream-url-input::placeholder { color:var(--text3); }
-#add-stream-btn {
-  padding:7px 16px; background:var(--blue); color:#fff;
-  border:none; border-radius:6px; cursor:pointer;
-  font-size:12px; font-weight:700; font-family:var(--arabic);
-}
-#add-stream-btn:hover { background:#1565c0; }
-
-/* ─── NEWS GRID ─── */
-#news-grid {
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  gap:12px;
-}
-@media (max-width:1200px) { #news-grid { grid-template-columns:1fr 1fr; } }
-@media (max-width:800px) { #news-grid { grid-template-columns:1fr; } }
-
-.news-col {
-  display:flex; flex-direction:column;
-  border-radius:8px; overflow:hidden;
-  border:1px solid var(--border);
-}
-.news-col-head {
-  padding:10px 12px; display:flex; align-items:center; gap:8px;
-  border-bottom:1px solid var(--border);
-  position:sticky; top:96px; z-index:10;
-  background:var(--surface2);
-}
-.news-col-head.col-iran { border-top:3px solid var(--red); }
-.news-col-head.col-syria { border-top:3px solid var(--amber); }
-.news-col-head.col-intl { border-top:3px solid var(--green); }
-
-.col-title { font-size:13px; font-weight:800; }
-.col-iran .col-title { color:var(--red); }
-.col-syria .col-title { color:var(--amber); }
-.col-intl .col-title { color:var(--green); }
-
-.col-count {
-  font-family:var(--mono); font-size:11px;
-  padding:2px 7px; border-radius:20px;
-  font-weight:700;
-}
-.col-iran .col-count { background:rgba(255,34,68,.15); color:var(--red); }
-.col-syria .col-count { background:rgba(240,165,0,.15); color:var(--amber); }
-.col-intl .col-count { background:rgba(0,230,118,.12); color:var(--green); }
-
-.col-refresh-btn {
-  margin-right:auto; background:transparent; border:none;
-  color:var(--text3); cursor:pointer; font-size:14px;
-  width:26px; height:26px; display:flex; align-items:center; justify-content:center;
-  border-radius:4px; transition:all .2s;
-}
-.col-refresh-btn:hover { background:var(--surface3); color:var(--text); }
-.spinning { animation: spin .8s linear infinite; }
-@keyframes spin { to { transform:rotate(360deg); } }
-
-.news-list {
-  flex:1; overflow-y:auto; background:var(--surface);
-  max-height:600px; padding:0;
-}
-.news-item {
-  padding:10px 12px;
-  border-bottom:1px solid rgba(26,40,64,.6);
-  cursor:pointer; transition:background .15s;
-  animation: slideIn .3s ease;
-}
-.news-item:hover { background:var(--surface2); }
-@keyframes slideIn { from{opacity:0;transform:translateX(-6px)} to{opacity:1;transform:none} }
-
-.news-item.new-item {
-  border-right:3px solid var(--amber);
-}
-.news-time {
-  font-family:var(--mono); font-size:10px; color:var(--text3);
-  margin-bottom:4px; display:flex; align-items:center; gap:6px;
-}
-.news-source {
-  font-size:10px; font-weight:700; padding:1px 6px;
-  border-radius:3px; color:#fff;
-}
-.src-aljazeera { background:#9e2a2b; }
-.src-bbc { background:#b80000; }
-.src-rt { background:#003087; }
-.src-reuters { background:#ff8000; color:#000; }
-.src-sputnik { background:#1a3a5c; }
-.src-ap { background:#cc0000; }
-.src-other { background:#2a3a4a; }
-
-.news-title {
-  font-size:13px; font-weight:600; color:var(--text);
-  line-height:1.5; margin-bottom:3px;
-}
-.news-title a { color:inherit; text-decoration:none; }
-.news-title a:hover { color:var(--amber); }
-.news-desc {
-  font-size:11px; color:var(--text3); line-height:1.5;
-  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
-}
-.news-translated {
-  font-size:10px; color:var(--green-dim);
-  margin-top:3px; display:flex; align-items:center; gap:4px;
-}
-.news-translated::before { content:'🌐'; font-size:10px; }
-
-.loading-news {
-  padding:24px; text-align:center; color:var(--text3); font-size:12px;
-}
-.loading-pulse {
-  display:inline-block; width:8px; height:8px; border-radius:50%;
-  background:var(--amber); animation:pulse 1s infinite;
-  margin-left:6px;
-}
-
-.news-error {
-  padding:16px; text-align:center; color:var(--red); font-size:12px;
-}
-
-/* ─── EXTRA PANELS ROW ─── */
-#extra-row {
-  display:grid; grid-template-columns:1fr 1fr;
-  gap:12px;
-}
-@media (max-width:800px) { #extra-row { grid-template-columns:1fr; } }
-
-/* ─── MARKET PANEL ─── */
-.panel {
-  border:1px solid var(--border); border-radius:8px;
-  overflow:hidden;
-}
-.panel-head {
-  padding:10px 14px; background:var(--surface2);
-  border-bottom:1px solid var(--border);
-  display:flex; align-items:center; gap:8px;
-  font-size:13px; font-weight:800;
-}
-.panel-body { padding:10px; background:var(--surface); }
-
-.market-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-.market-card {
-  background:var(--surface2); border:1px solid var(--border);
-  border-radius:6px; padding:10px;
-}
-.mc-label { font-size:10px; color:var(--text3); margin-bottom:2px; }
-.mc-val { font-family:var(--mono); font-size:16px; font-weight:700; color:var(--text); }
-.mc-sub { font-family:var(--mono); font-size:10px; color:var(--text3); margin-top:2px; }
-.mc-change { font-family:var(--mono); font-size:12px; font-weight:700; margin-top:3px; }
-
-/* ─── NOTIFICATION TOAST ─── */
-#toast-area {
-  position:fixed; bottom:20px; left:20px; z-index:9999;
-  display:flex; flex-direction:column; gap:8px;
-  max-width:320px;
-}
-.toast {
-  background:var(--surface2); border:1px solid var(--border2);
-  border-right:3px solid var(--amber);
-  border-radius:8px; padding:10px 14px;
-  animation: toastIn .3s ease;
-  font-size:12px;
-}
-@keyframes toastIn { from{opacity:0;transform:translateX(-20px)} to{opacity:1;transform:none} }
-.toast-title { font-weight:700; color:var(--amber); margin-bottom:3px; font-size:11px; }
-.toast-body { color:var(--text2); }
-
-/* ─── STATUS BAR ─── */
-#status-bar {
-  background:var(--surface); border-top:1px solid var(--border);
-  padding:4px 16px; display:flex; align-items:center; gap:16px;
-  font-family:var(--mono); font-size:10px; color:var(--text3);
-}
-.status-item { display:flex; align-items:center; gap:4px; }
-.status-dot { width:6px; height:6px; border-radius:50%; }
-.dot-green { background:var(--green); }
-.dot-amber { background:var(--amber); }
-.dot-red { background:var(--red); }
-.dot-gray { background:var(--text3); }
-
-/* ─── MODAL (Add Stream) ─── */
-#modal-overlay {
-  display:none; position:fixed; inset:0;
-  background:rgba(0,0,0,.7); z-index:200;
-  align-items:center; justify-content:center;
-}
-#modal-overlay.show { display:flex; }
-.modal {
-  background:var(--surface2); border:1px solid var(--border2);
-  border-radius:12px; padding:24px; width:480px; max-width:95vw;
-}
-.modal h3 { font-size:16px; font-weight:800; color:var(--amber); margin-bottom:16px; }
-.modal-input {
-  width:100%; padding:10px 14px;
-  background:var(--bg); border:1px solid var(--border2);
-  color:var(--text); font-size:13px; border-radius:8px;
-  font-family:var(--arabic); direction:ltr;
-  outline:none; margin-bottom:12px;
-}
-.modal-input:focus { border-color:var(--amber); }
-.modal-btns { display:flex; gap:8px; justify-content:flex-end; }
-.btn-primary { padding:8px 20px; background:var(--amber); color:#000; border:none; border-radius:6px; cursor:pointer; font-weight:700; font-family:var(--arabic); }
-.btn-secondary { padding:8px 20px; background:transparent; color:var(--text2); border:1px solid var(--border2); border-radius:6px; cursor:pointer; font-family:var(--arabic); }
-.modal-hint { font-size:11px; color:var(--text3); margin-bottom:12px; line-height:1.6; }
-.preset-channels { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
-.preset-btn {
-  padding:4px 10px; font-size:11px; cursor:pointer;
-  background:var(--surface3); border:1px solid var(--border2);
-  color:var(--text2); border-radius:20px; font-family:var(--arabic);
-  transition:all .2s;
-}
-.preset-btn:hover { background:var(--blue); color:#fff; border-color:var(--blue); }
+/* MODAL */
+#mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:center;justify-content:center}
+#mo.show{display:flex}
+.modal{background:var(--surface2);border:1px solid var(--border2);border-radius:12px;padding:22px;width:460px;max-width:95vw}
+.modal h3{font-size:15px;font-weight:800;color:var(--amber);margin-bottom:14px}
+.mi{width:100%;padding:9px 12px;background:var(--bg);border:1px solid var(--border2);color:var(--text);font-size:12px;border-radius:7px;font-family:var(--ar);outline:none;margin-bottom:10px}
+.mi:focus{border-color:var(--amber)}
+.mhint{font-size:11px;color:var(--text3);margin-bottom:10px;line-height:1.6}
+.presets{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.pbtn2{padding:4px 10px;font-size:11px;cursor:pointer;background:var(--surface3);border:1px solid var(--border2);color:var(--text2);border-radius:20px;font-family:var(--ar);transition:.2s}
+.pbtn2:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
+.mbtns{display:flex;gap:8px;justify-content:flex-end}
+.bp{padding:7px 18px;background:var(--amber);color:#000;border:none;border-radius:6px;cursor:pointer;font-weight:700;font-family:var(--ar)}
+.bs{padding:7px 18px;background:transparent;color:var(--text2);border:1px solid var(--border2);border-radius:6px;cursor:pointer;font-family:var(--ar)}
 </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════ HEADER -->
+<!-- HEADER -->
 <div id="header">
-  <div class="header-top">
+  <div class="hdr-top">
     <div class="logo">
       <div class="logo-icon">📡</div>
       <div>
         <div class="logo-text">غرفة العمليات</div>
-        <div class="logo-sub">مراقبة الأخبار - دقيقة بدقيقة</div>
+        <div class="logo-sub">مراقبة الأخبار – دقيقة بدقيقة</div>
       </div>
     </div>
-    <div class="live-badge"><div class="live-dot"></div> LIVE</div>
+    <div class="live-badge"><div class="live-dot"></div>LIVE</div>
     <div class="ticker-wrap">
       <div class="ticker-label">🔴 عاجل</div>
-      <div class="ticker-track" id="ticker-track">
-        <span class="ticker-item"><span class="ti-src">الجزيرة</span> جاري تحميل الأخبار العاجلة...</span>
+      <div class="ticker-track" id="ticker">
+        <span class="ticker-item"><span class="ti-src">النظام</span>جاري تحميل الأخبار...</span>
+        <span class="ticker-item"><span class="ti-src">النظام</span>جاري تحميل الأخبار...</span>
       </div>
     </div>
-    <div class="clock-block">
-      <div class="clock-time" id="clock">--:--:--</div>
-      <div class="clock-date" id="clock-date">---</div>
+    <div class="clk">
+      <div class="clk-t" id="clk">--:--:--</div>
+      <div class="clk-d" id="clkd">---</div>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════ PRICES -->
-<div id="prices-bar">
-  <div class="price-item" id="p-btc">
-    <div>
-      <div class="price-label">₿ بيتكوين</div>
-      <div class="price-value loading-price">جاري التحميل...</div>
-    </div>
-    <span class="price-change" id="btc-chg"></span>
-    <span class="price-update" id="btc-upd"></span>
-  </div>
-  <div class="price-item" id="p-gold">
-    <div>
-      <div class="price-label">🥇 ذهب / غرام TRY</div>
-      <div class="price-value loading-price">جاري التحميل...</div>
-    </div>
-    <span class="price-change" id="gold-chg"></span>
-  </div>
-  <div class="price-item" id="p-usdtry">
-    <div>
-      <div class="price-label">💵 دولار / ليرة</div>
-      <div class="price-value loading-price">جاري التحميل...</div>
-    </div>
-    <span class="price-change" id="usd-chg"></span>
-  </div>
-  <div class="price-item" id="p-eurtry">
-    <div>
-      <div class="price-label">💶 يورو / ليرة</div>
-      <div class="price-value loading-price">جاري التحميل...</div>
-    </div>
-    <span class="price-change" id="eur-chg"></span>
-  </div>
-  <div class="price-item" id="p-btctry">
-    <div>
-      <div class="price-label">₿ بيتكوين / ليرة</div>
-      <div class="price-value loading-price">...</div>
-    </div>
-  </div>
-  <div class="price-item" id="p-goldoz">
-    <div>
-      <div class="price-label">🥇 ذهب / أوقية USD</div>
-      <div class="price-value loading-price">...</div>
-    </div>
-  </div>
-  <button id="price-refresh-btn" onclick="fetchPrices()">↻ تحديث</button>
+<!-- PRICES BAR -->
+<div id="pbar">
+  <div class="pi" id="p-btc"><div><div class="pi-lbl">₿ بيتكوين USD</div><div class="pi-val">جاري...</div></div></div>
+  <div class="pi" id="p-gold"><div><div class="pi-lbl">🥇 ذهب غرام TRY</div><div class="pi-val">جاري...</div></div></div>
+  <div class="pi" id="p-usd"><div><div class="pi-lbl">💵 دولار / ليرة</div><div class="pi-val">جاري...</div></div></div>
+  <div class="pi" id="p-eur"><div><div class="pi-lbl">💶 يورو / ليرة</div><div class="pi-val">جاري...</div></div></div>
+  <div class="pi" id="p-btctry"><div><div class="pi-lbl">₿ بيتكوين TRY</div><div class="pi-val">...</div></div></div>
+  <div class="pi" id="p-goldoz"><div><div class="pi-lbl">🥇 ذهب أوقية USD</div><div class="pi-val">...</div></div></div>
+  <button id="pbtn" onclick="fetchPrices()">↻ تحديث</button>
 </div>
 
-<!-- ══════════════════════════════════════════ MAIN -->
+<!-- MAIN -->
 <div id="main">
 
-  <!-- ── STREAMS SECTION ── -->
-  <div id="streams-section">
-    <div class="section-head" id="streams-head">
-      <div style="font-size:16px">📺</div>
-      <h2>البث المباشر</h2>
+  <!-- STREAMS -->
+  <div>
+    <div class="sec-hd" style="border-bottom-color:var(--blue)">
+      <div>📺</div>
+      <h2 style="color:var(--blue)">البث المباشر</h2>
       <div class="live-badge" style="border-color:rgba(41,121,255,.4);background:rgba(41,121,255,.08);color:#2979ff">
-        <div class="live-dot" style="background:#2979ff"></div> LIVE TV
+        <div class="live-dot" style="background:#2979ff"></div>LIVE TV
       </div>
       <div class="sec-ctrl">
-        <span style="font-size:11px;color:var(--text3);margin-left:4px">التخطيط:</span>
-        <button class="sec-btn" onclick="setStreamCols(1)">1 بجانب</button>
-        <button class="sec-btn active" onclick="setStreamCols(2)">2 بجانب</button>
-        <button class="sec-btn" onclick="setStreamCols(3)">3 بجانب</button>
-        <button class="sec-btn" onclick="toggleStreams()" id="toggle-streams-btn">إخفاء</button>
+        <span style="font-size:11px;color:var(--text3)">تخطيط:</span>
+        <button class="sbtn" onclick="setCols(1)">1</button>
+        <button class="sbtn act" onclick="setCols(2)">2</button>
+        <button class="sbtn" onclick="setCols(3)">3</button>
+        <button class="sbtn" id="tog" onclick="toggleS()">إخفاء</button>
       </div>
     </div>
-    <div id="streams-container" class="cols-2">
-      <div class="stream-empty"><span>📺</span>اضغط "إضافة قناة" لإضافة بث مباشر من يوتيوب</div>
+    <div id="sc" class="c2">
+      <div class="sem"><span>📺</span>اضغط "إضافة قناة" لإضافة بث مباشر</div>
     </div>
-    <div id="add-stream-bar">
-      <input id="stream-url-input" type="text" placeholder="أدخل رابط يوتيوب أو معرّف القناة أو الفيديو...">
-      <input id="stream-name-input" type="text" placeholder="اسم القناة" style="width:140px;padding:7px 10px;background:var(--surface2);border:1px solid var(--border2);color:var(--text);border-radius:6px;font-family:var(--arabic);outline:none;direction:rtl">
-      <button id="add-stream-btn" onclick="showAddStreamModal()">+ إضافة قناة</button>
+    <div id="asb">
+      <input id="surl" type="text" placeholder="رابط يوتيوب أو معرّف القناة...">
+      <button id="addsbtn" onclick="openModal()">+ إضافة قناة</button>
     </div>
   </div>
 
-  <!-- ── NEWS GRID ── -->
-  <div id="news-grid">
-
-    <!-- COL 1: Iran/Israel/America -->
-    <div class="news-col">
-      <div class="news-col-head col-iran">
-        <span style="font-size:16px">🔴</span>
-        <span class="col-title">إيران · إسرائيل · أمريكا</span>
-        <span class="col-count" id="iran-count">0</span>
-        <button class="col-refresh-btn" onclick="loadIranNews()" id="iran-refresh-btn" title="تحديث">↻</button>
+  <!-- NEWS GRID -->
+  <div id="ng">
+    <div class="nc">
+      <div class="nch ci">
+        <span>🔴</span>
+        <span class="nct">إيران · إسرائيل · أمريكا</span>
+        <span class="ncc" id="cnt-iran">0</span>
+        <button class="rbtn" id="rb-iran" onclick="loadNews('iran')">↻</button>
       </div>
-      <div class="news-list" id="iran-list">
-        <div class="loading-news">جاري تحميل الأخبار <span class="loading-pulse"></span></div>
+      <div class="nl" id="nl-iran">
+        <div class="lnews"><span class="lp"></span>جاري التحميل...</div>
       </div>
     </div>
-
-    <!-- COL 2: Syria -->
-    <div class="news-col">
-      <div class="news-col-head col-syria">
-        <span style="font-size:16px">🟡</span>
-        <span class="col-title">سوريا</span>
-        <span class="col-count" id="syria-count">0</span>
-        <button class="col-refresh-btn" onclick="loadSyriaNews()" id="syria-refresh-btn" title="تحديث">↻</button>
+    <div class="nc">
+      <div class="nch cs">
+        <span>🟡</span>
+        <span class="nct">سوريا</span>
+        <span class="ncc" id="cnt-syria">0</span>
+        <button class="rbtn" id="rb-syria" onclick="loadNews('syria')">↻</button>
       </div>
-      <div class="news-list" id="syria-list">
-        <div class="loading-news">جاري تحميل الأخبار <span class="loading-pulse"></span></div>
+      <div class="nl" id="nl-syria">
+        <div class="lnews"><span class="lp"></span>جاري التحميل...</div>
       </div>
     </div>
-
-    <!-- COL 3: International (Translated) -->
-    <div class="news-col">
-      <div class="news-col-head col-intl">
-        <span style="font-size:16px">🌐</span>
-        <span class="col-title">دولي – مترجم للعربية</span>
-        <span class="col-count" id="intl-count">0</span>
-        <button class="col-refresh-btn" onclick="loadIntlNews()" id="intl-refresh-btn" title="تحديث">↻</button>
+    <div class="nc">
+      <div class="nch cx">
+        <span>🌐</span>
+        <span class="nct">دولي – مترجم للعربية</span>
+        <span class="ncc" id="cnt-intl">0</span>
+        <button class="rbtn" id="rb-intl" onclick="loadNews('intl')">↻</button>
       </div>
-      <div class="news-list" id="intl-list">
-        <div class="loading-news">جاري تحميل الأخبار <span class="loading-pulse"></span></div>
+      <div class="nl" id="nl-intl">
+        <div class="lnews"><span class="lp"></span>جاري التحميل...</div>
       </div>
     </div>
   </div>
 
-  <!-- ── EXTRA ROW ── -->
-  <div id="extra-row">
-    <!-- Market Detail Panel -->
+  <!-- EXTRA ROW -->
+  <div id="er">
     <div class="panel">
-      <div class="panel-head" style="border-top:3px solid var(--amber)">
+      <div class="ph" style="border-top:3px solid var(--amber)">
         <span>📊</span>
         <span style="color:var(--amber)">الأسواق التفصيلية</span>
-        <button class="col-refresh-btn" onclick="fetchPrices()" style="margin-right:auto">↻</button>
+        <button class="rbtn" onclick="fetchPrices()" style="margin-right:auto">↻</button>
       </div>
-      <div class="panel-body">
-        <div class="market-grid" id="market-grid">
-          <div class="market-card">
-            <div class="mc-label">بيتكوين USD</div>
-            <div class="mc-val" id="m-btc-usd">---</div>
-            <div class="mc-change" id="m-btc-chg">---</div>
-          </div>
-          <div class="market-card">
-            <div class="mc-label">بيتكوين TRY</div>
-            <div class="mc-val" id="m-btc-try">---</div>
-            <div class="mc-sub">ليرة تركية</div>
-          </div>
-          <div class="market-card">
-            <div class="mc-label">ذهب / أوقية USD</div>
-            <div class="mc-val" id="m-gold-oz">---</div>
-            <div class="mc-sub">XAU/USD</div>
-          </div>
-          <div class="market-card">
-            <div class="mc-label">ذهب / غرام TRY</div>
-            <div class="mc-val" id="m-gold-try">---</div>
-            <div class="mc-sub">ليرة تركية</div>
-          </div>
-          <div class="market-card">
-            <div class="mc-label">دولار / ليرة تركية</div>
-            <div class="mc-val" id="m-usd-try">---</div>
-            <div class="mc-change" id="m-usd-chg">---</div>
-          </div>
-          <div class="market-card">
-            <div class="mc-label">يورو / ليرة تركية</div>
-            <div class="mc-val" id="m-eur-try">---</div>
-            <div class="mc-change" id="m-eur-chg">---</div>
-          </div>
+      <div class="pb">
+        <div class="mg">
+          <div class="mc"><div class="mcl">بيتكوين USD</div><div class="mcv" id="m-btc">---</div></div>
+          <div class="mc"><div class="mcl">بيتكوين TRY</div><div class="mcv" id="m-btctry">---</div><div class="mcs">ليرة تركية</div></div>
+          <div class="mc"><div class="mcl">ذهب / أوقية USD</div><div class="mcv" id="m-goldoz">---</div></div>
+          <div class="mc"><div class="mcl">ذهب / غرام TRY</div><div class="mcv" id="m-goldgr">---</div></div>
+          <div class="mc"><div class="mcl">USD / TRY</div><div class="mcv" id="m-usd">---</div></div>
+          <div class="mc"><div class="mcl">EUR / TRY</div><div class="mcv" id="m-eur">---</div></div>
         </div>
       </div>
     </div>
-
-    <!-- Alerts / Log Panel -->
     <div class="panel">
-      <div class="panel-head" style="border-top:3px solid var(--red)">
+      <div class="ph" style="border-top:3px solid var(--red)">
         <span>🔔</span>
-        <span style="color:var(--red)">سجل الأحداث والتنبيهات</span>
-        <button onclick="clearLog()" style="margin-right:auto;background:transparent;border:none;color:var(--text3);cursor:pointer;font-size:11px;font-family:var(--arabic)">مسح</button>
+        <span style="color:var(--red)">سجل الأحداث</span>
+        <button onclick="document.getElementById('elog').innerHTML=''" style="margin-right:auto;background:transparent;border:none;color:var(--text3);cursor:pointer;font-size:11px;font-family:var(--ar)">مسح</button>
       </div>
-      <div class="panel-body" style="max-height:220px;overflow-y:auto;padding:6px">
-        <div id="event-log" style="font-size:11px;font-family:var(--mono);color:var(--text3)">
+      <div class="pb" style="max-height:210px;overflow-y:auto;padding:6px">
+        <div id="elog" style="font-size:11px;font-family:var(--mono);color:var(--text3)">
           <div style="color:var(--amber)">▶ جاري تهيئة النظام...</div>
         </div>
       </div>
@@ -661,470 +293,508 @@ body::before {
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════ STATUS BAR -->
-<div id="status-bar">
-  <div class="status-item"><div class="status-dot" id="dot-prices"></div> <span id="st-prices">الأسعار</span></div>
-  <div class="status-item"><div class="status-dot" id="dot-iran"></div> <span>إيران/إسرائيل</span></div>
-  <div class="status-item"><div class="status-dot" id="dot-syria"></div> <span>سوريا</span></div>
-  <div class="status-item"><div class="status-dot" id="dot-intl"></div> <span>دولي</span></div>
-  <div style="margin-right:auto"></div>
-  <span id="st-last-update">آخر تحديث: ---</span>
-  <span>↻ تحديث كل 3 دقائق</span>
+<!-- STATUS BAR -->
+<div id="sb">
+  <div class="si2"><div class="sd dy" id="d-prices"></div><span>الأسعار</span></div>
+  <div class="si2"><div class="sd dy" id="d-iran"></div><span>إيران</span></div>
+  <div class="si2"><div class="sd dy" id="d-syria"></div><span>سوريا</span></div>
+  <div class="si2"><div class="sd dy" id="d-intl"></div><span>دولي</span></div>
+  <span style="margin-right:auto"></span>
+  <span id="st-upd">آخر تحديث: ---</span>
+  <span>↻ تلقائي كل 3 دقائق</span>
 </div>
 
 <!-- TOAST -->
-<div id="toast-area"></div>
+<div id="ta"></div>
 
 <!-- MODAL -->
-<div id="modal-overlay">
+<div id="mo">
   <div class="modal">
-    <h3>➕ إضافة قناة بث مباشر</h3>
-    <p class="modal-hint">قنوات سريعة (اضغط للإضافة):</p>
-    <div class="preset-channels">
-      <button class="preset-btn" onclick="addPreset('UCNye-wNBqNL5ZzHSJdR7jRQ','الجزيرة عربي')">📺 الجزيرة عربي</button>
-      <button class="preset-btn" onclick="addPreset('UCx8Z14PpntdaxCt2hakbQLQ','سكاي نيوز عربية')">📺 سكاي نيوز</button>
-      <button class="preset-btn" onclick="addPreset('UCdrCZpupazgWEAfPSbMQe1w','العربية')">📺 العربية</button>
-      <button class="preset-btn" onclick="addPreset('UCfsHEBEMeS4K3SuFBHa5tGQ','فرانس 24 عربي')">📺 فرانس 24</button>
-      <button class="preset-btn" onclick="addPreset('UCY-cP8UBMxwQCpAQcLEy4jg','BBC عربي')">📺 BBC عربي</button>
-      <button class="preset-btn" onclick="addPreset('UCjTFVOe7chYGaGqHHJKTSOg','RT عربي')">📺 RT عربي</button>
-      <button class="preset-btn" onclick="addPreset('UCTC3H8objpwnkLfRwf5P0Sw','TRT عربي')">📺 TRT عربي</button>
+    <h3>➕ إضافة بث مباشر</h3>
+    <p class="mhint">قنوات جاهزة (اضغط للإضافة الفورية):</p>
+    <div class="presets">
+      <button class="pbtn2" onclick="addPreset('UCNye-wNBqNL5ZzHSJdR7jRQ','الجزيرة عربي')">الجزيرة عربي</button>
+      <button class="pbtn2" onclick="addPreset('UCx8Z14PpntdaxCt2hakbQLQ','سكاي نيوز')">سكاي نيوز</button>
+      <button class="pbtn2" onclick="addPreset('UCdrCZpupazgWEAfPSbMQe1w','العربية')">العربية</button>
+      <button class="pbtn2" onclick="addPreset('UCfsHEBEMeS4K3SuFBHa5tGQ','فرانس 24')">فرانس 24</button>
+      <button class="pbtn2" onclick="addPreset('UCY-cP8UBMxwQCpAQcLEy4jg','BBC عربي')">BBC عربي</button>
+      <button class="pbtn2" onclick="addPreset('UCjTFVOe7chYGaGqHHJKTSOg','RT عربي')">RT عربي</button>
+      <button class="pbtn2" onclick="addPreset('UCTC3H8objpwnkLfRwf5P0Sw','TRT عربي')">TRT عربي</button>
     </div>
-    <p class="modal-hint">أو أدخل رابط يوتيوب / معرّف القناة / معرّف الفيديو:<br>
-    مثال: https://youtube.com/@Aljazeeraarabic | UCNye-... | dQw4w9WgXcQ</p>
-    <input class="modal-input" id="m-url" type="text" placeholder="الرابط أو المعرّف...">
-    <input class="modal-input" id="m-name" type="text" placeholder="اسم القناة (اختياري)" style="direction:rtl">
-    <div class="modal-btns">
-      <button class="btn-secondary" onclick="closeModal()">إلغاء</button>
-      <button class="btn-primary" onclick="confirmAddStream()">إضافة</button>
+    <p class="mhint">أو أدخل رابط / معرّف القناة أو الفيديو:</p>
+    <input class="mi" id="m-url" type="text" placeholder="https://youtube.com/... أو UCxxxxxxx أو فيديو ID">
+    <input class="mi" id="m-name" type="text" placeholder="اسم القناة (اختياري)" style="direction:rtl">
+    <div class="mbtns">
+      <button class="bs" onclick="closeModal()">إلغاء</button>
+      <button class="bp" onclick="confirmAdd()">إضافة</button>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════ SCRIPT -->
 <script>
-// ─── CONFIG ───────────────────────────────────────────────────
-const PROXY = 'https://api.allorigins.win/get?url=';
-const RSS2JSON = 'https://api.rss2json.com/v1/api.json?count=20&rss_url=';
-const TRANSLATE_API = 'https://api.mymemory.translated.net/get?q=';
-
+// ════════════════════════════════════════════════════════════
+// FEEDS CONFIG
+// ════════════════════════════════════════════════════════════
 const FEEDS = {
   arabic: [
-    { url:'https://www.aljazeera.net/xml/rss2.0.xml', name:'الجزيرة', cls:'src-aljazeera' },
-    { url:'https://feeds.bbci.co.uk/arabic/rss.xml', name:'BBC عربي', cls:'src-bbc' },
-    { url:'https://arabic.rt.com/rss/', name:'RT عربي', cls:'src-rt' },
+    { url:'https://www.aljazeera.net/xml/rss2.0.xml',         name:'الجزيرة',   cls:'s-aj'  },
+    { url:'https://feeds.bbci.co.uk/arabic/rss.xml',          name:'BBC عربي',  cls:'s-bbc' },
+    { url:'https://arabic.rt.com/rss/',                       name:'RT عربي',   cls:'s-rt'  },
+    { url:'https://www.france24.com/ar/rss',                  name:'فرانس 24',  cls:'s-o'   },
   ],
   english: [
-    { url:'https://feeds.reuters.com/reuters/worldNews', name:'Reuters', cls:'src-reuters' },
-    { url:'https://www.aljazeera.com/xml/rss/all.xml', name:'Al Jazeera EN', cls:'src-aljazeera' },
-    { url:'https://apnews.com/apf-intlnews.rss', name:'AP News', cls:'src-ap' },
+    { url:'https://feeds.bbci.co.uk/news/world/rss.xml',      name:'BBC World', cls:'s-bbc' },
+    { url:'https://www.theguardian.com/world/rss',            name:'Guardian',  cls:'s-o'   },
+    { url:'https://feeds.skynews.com/feeds/rss/world.xml',    name:'Sky News',  cls:'s-o'   },
+    { url:'https://rss.nytimes.com/services/xml/rss/nyt/World.xml', name:'NY Times', cls:'s-o' },
   ]
 };
 
-const KEYWORDS = {
-  iran: ['إيران','إسرائيل','أمريكا','واشنطن','هجوم','ضربة','نووي','غزة','حرب','لبنان','حماس','حزب الله','طهران','بنيامين','نتنياهو','تل أبيب','بنتاغون','باراك','صاروخ','قصف','اغتيال'],
-  iran_en: ['Iran','Israel','America','Washington','attack','nuclear','Gaza','war','Lebanon','Hamas','Hezbollah','Tehran','Netanyahu','Pentagon','missile','airstrike','assassination','sanctions'],
-  syria: ['سوريا','السوريا','دمشق','حلب','إدلب','درعا','حمص','السوري','الأسد','بشار','درعا','الشام','هيئة تحرير الشام','المعارضة السورية','اللاجئين السوريين'],
-  intl: ['Iran','Syria','Israel','Hamas','Hezbollah','Gaza','Lebanon','Middle East','nuclear','war','attack','ceasefire','sanctions','military','Ankara','Turkey'],
+const KW = {
+  iran:  ['إيران','إسرائيل','أمريكا','واشنطن','هجوم','ضربة','نووي','غزة','حرب','لبنان','حماس','حزب الله','طهران','نتنياهو','تل أبيب','بنتاغون','صاروخ','قصف','اغتيال','الاحتلال','ترامب','الشرق الأوسط','المقاومة','الضفة','رفح'],
+  syria: ['سوريا','دمشق','حلب','إدلب','درعا','حمص','السوري','الأسد','بشار','الشام','هيئة تحرير الشام','المعارضة السورية','الجولان','سراقب','طرطوس','اللاذقية'],
+  intl:  ['iran','israel','hamas','hezbollah','gaza','lebanon','syria','middle east','nuclear','war','ceasefire','sanctions','airstrike','missile','netanyahu','tehran','idf','irgc','houthi','west bank','rafah'],
 };
 
-const state = {
-  streams:[],
-  streamCols:2,
-  streamsVisible:true,
-  prices:{ btc:null, gold:null, usd:null, eur:null },
-  prevPrices:{ btc:null, gold:null, usd:null, eur:null },
-  iranItems:[], syriaItems:[], intlItems:[],
-  log:[],
-};
+const state = { streams:[], cols:2, vis:true, prices:{} };
 
-// ─── CLOCK ────────────────────────────────────────────────────
-function updateClock(){
-  const now = new Date();
-  document.getElementById('clock').textContent = now.toLocaleTimeString('ar-TR',{hour12:false});
-  document.getElementById('clock-date').textContent = now.toLocaleDateString('ar-TR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+// ════════════════════════════════════════════════════════════
+// CLOCK
+// ════════════════════════════════════════════════════════════
+(function tick(){
+  const n=new Date();
+  const el=document.getElementById('clk');
+  const ed=document.getElementById('clkd');
+  if(el) el.textContent=n.toLocaleTimeString('ar',{hour12:false});
+  if(ed) ed.textContent=n.toLocaleDateString('ar',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+  setTimeout(tick,1000);
+})();
+
+// ════════════════════════════════════════════════════════════
+// LOG + TOAST
+// ════════════════════════════════════════════════════════════
+function lg(msg, t='info'){
+  const el=document.getElementById('elog'); if(!el) return;
+  const tm=new Date().toLocaleTimeString('ar',{hour12:false});
+  const c={info:'#8a9baf',ok:'#00e676',warn:'#f0a500',err:'#ff2244'}[t]||'#8a9baf';
+  const ic={info:'ℹ',ok:'✓',warn:'⚠',err:'✗'}[t]||'·';
+  el.innerHTML=`<div style="color:${c}">[${tm}] ${ic} ${msg}</div>`+el.innerHTML;
 }
-setInterval(updateClock,1000); updateClock();
-
-// ─── LOG ──────────────────────────────────────────────────────
-function log(msg,type='info'){
-  const el=document.getElementById('event-log');
-  const t=new Date().toLocaleTimeString('ar-TR',{hour12:false});
-  const colors={info:'var(--text2)',ok:'var(--green)',warn:'var(--amber)',err:'var(--red)'};
-  const icons={info:'ℹ',ok:'✓',warn:'⚠',err:'✗'};
-  el.innerHTML=`<div style="color:${colors[type]}">[${t}] ${icons[type]} ${msg}</div>`+el.innerHTML;
-  state.log.unshift({t,msg,type});
+function toast(title,body,dur=4500){
+  const a=document.getElementById('ta'); if(!a) return;
+  const e=document.createElement('div'); e.className='toast';
+  e.innerHTML=`<div class="tt">${title}</div><div class="tb">${body}</div>`;
+  a.appendChild(e);
+  setTimeout(()=>{ e.style.cssText='opacity:0;transform:translateX(-16px);transition:.3s'; setTimeout(()=>e.remove(),320); },dur);
 }
-function clearLog(){document.getElementById('event-log').innerHTML='';}
-
-// ─── TOAST ────────────────────────────────────────────────────
-function toast(title,body,dur=5000){
-  const area=document.getElementById('toast-area');
-  const el=document.createElement('div'); el.className='toast';
-  el.innerHTML=`<div class="toast-title">${title}</div><div class="toast-body">${body}</div>`;
-  area.appendChild(el);
-  setTimeout(()=>{el.style.opacity='0';el.style.transform='translateX(-20px)';el.style.transition='.3s';setTimeout(()=>el.remove(),300);},dur);
+function dot(id,s){
+  const e=document.getElementById(id); if(!e) return;
+  e.className='sd '+({ok:'dg',load:'da',err:'dr'}[s]||'dy');
 }
 
-// ─── STATUS DOTS ──────────────────────────────────────────────
-function setStatus(id,state2){
-  const el=document.getElementById(id);
-  if(!el)return;
-  el.className='status-dot '+(state2==='ok'?'dot-green':state2==='loading'?'dot-amber':state2==='error'?'dot-red':'dot-gray');
-}
+// ════════════════════════════════════════════════════════════
+// PRICES
+// ════════════════════════════════════════════════════════════
+function fmt(n,d=2){ return (n!=null&&!isNaN(n))?n.toLocaleString('en',{minimumFractionDigits:d,maximumFractionDigits:d}):'---'; }
 
-// ─── PRICES ───────────────────────────────────────────────────
-function fmtNum(n,dec=2){ return n?n.toLocaleString('en',{minimumFractionDigits:dec,maximumFractionDigits:dec}):'---'; }
+async function safeJSON(url, ms=8000){
+  const ctrl=new AbortController();
+  const timer=setTimeout(()=>ctrl.abort(),ms);
+  try {
+    const r=await fetch(url,{signal:ctrl.signal});
+    clearTimeout(timer);
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    return await r.json();
+  } catch(e){ clearTimeout(timer); throw e; }
+}
 
 async function fetchPrices(){
-  log('تحديث أسعار الأسواق...','info');
-  setStatus('dot-prices','loading');
+  dot('d-prices','load');
+  lg('تحديث الأسعار...','info');
+  const prev={...state.prices};
   try {
-    const [btcRes, usdRes, eurRes, goldRes] = await Promise.allSettled([
-      fetch('https://api.coinbase.com/v2/prices/BTC-USD/spot'),
-      fetch('https://api.frankfurter.app/latest?from=USD&to=TRY'),
-      fetch('https://api.frankfurter.app/latest?from=EUR&to=TRY'),
-      fetch('https://api.coinbase.com/v2/prices/XAU-USD/spot'),
-    ]);
-    const prev = {...state.prices};
+    // BTC + BTC/TRY from CoinGecko (no key, free)
+    const btcData = await safeJSON('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd,try');
+    if(btcData?.bitcoin){ state.prices.btc=btcData.bitcoin.usd; state.prices.btctry=btcData.bitcoin.try; }
+  } catch(e){ lg('CoinGecko خطأ: '+e.message,'warn'); }
 
-    if(btcRes.status==='fulfilled'){ const d=await btcRes.value.json(); state.prices.btc=parseFloat(d.data.amount); }
-    if(usdRes.status==='fulfilled'){ const d=await usdRes.value.json(); state.prices.usd=d.rates.TRY; }
-    if(eurRes.status==='fulfilled'){ const d=await eurRes.value.json(); state.prices.eur=d.rates.TRY; }
-    if(goldRes.status==='fulfilled'){ const d=await goldRes.value.json(); state.prices.gold=parseFloat(d.data.amount); }
+  try {
+    // USD/TRY and EUR/TRY from exchangerate-api (free, no key)
+    const fxData = await safeJSON('https://api.exchangerate-api.com/v4/latest/USD');
+    if(fxData?.rates){ state.prices.usd=fxData.rates.TRY; state.prices.eur=fxData.rates.TRY/fxData.rates.EUR; }
+  } catch(e){ lg('FX خطأ: '+e.message,'warn'); }
 
-    updatePriceDisplay(prev);
-    setStatus('dot-prices','ok');
-    log('تم تحديث الأسعار بنجاح','ok');
-    document.getElementById('st-last-update').textContent='آخر تحديث: '+new Date().toLocaleTimeString('ar-TR',{hour12:false});
-  } catch(e){ setStatus('dot-prices','error'); log('خطأ في تحميل الأسعار: '+e.message,'err'); }
-}
-
-function updatePriceDisplay(prev){
-  const p=state.prices;
-  const goldGramTRY = p.gold && p.usd ? (p.gold * p.usd / 31.1035) : null;
-  const btcTRY = p.btc && p.usd ? (p.btc * p.usd) : null;
-
-  function setPrice(barId,valEl,val,prevVal,fmt,suffix=''){
-    const bar=document.getElementById(barId);
-    if(!bar)return;
-    const el=bar.querySelector('.price-value');
-    if(el){ el.textContent=fmt(val)+(suffix?' '+suffix:''); }
-    if(prevVal && val && prevVal!==val){
-      if(el){ el.classList.remove('price-flash-up','price-flash-down'); void el.offsetWidth; el.classList.add(val>prevVal?'price-flash-up':'price-flash-down'); }
-    }
+  try {
+    // Gold from metals.live (free)
+    const goldData = await safeJSON('https://api.metals.live/v1/spot/gold');
+    if(Array.isArray(goldData) && goldData[0]?.price) state.prices.gold=goldData[0].price;
+    else if(goldData?.price) state.prices.gold=goldData.price;
+  } catch(e){
+    // Fallback: approximate gold price
+    if(!state.prices.gold) state.prices.gold=3180;
+    lg('Gold API خطأ – استخدام قيمة تقريبية','warn');
   }
 
-  if(p.btc){ const el=document.querySelector('#p-btc .price-value'); if(el){el.textContent='$'+fmtNum(p.btc,0); if(prev.btc&&p.btc!==prev.btc){el.classList.remove('price-flash-up','price-flash-down');void el.offsetWidth;el.classList.add(p.btc>prev.btc?'price-flash-up':'price-flash-down');}}}
-  if(goldGramTRY){ const el=document.querySelector('#p-gold .price-value'); if(el) el.textContent=fmtNum(goldGramTRY,0)+' ₺'; }
-  if(p.usd){ const el=document.querySelector('#p-usdtry .price-value'); if(el){el.textContent=fmtNum(p.usd,2)+' ₺'; if(prev.usd&&p.usd!==prev.usd){el.classList.remove('price-flash-up','price-flash-down');void el.offsetWidth;el.classList.add(p.usd>prev.usd?'price-flash-up':'price-flash-down');}}}
-  if(p.eur){ const el=document.querySelector('#p-eurtry .price-value'); if(el) el.textContent=fmtNum(p.eur,2)+' ₺'; }
-  if(btcTRY){ const el=document.querySelector('#p-btctry .price-value'); if(el) el.textContent=fmtNum(btcTRY,0)+' ₺'; }
-  if(p.gold){ const el=document.querySelector('#p-goldoz .price-value'); if(el) el.textContent='$'+fmtNum(p.gold,0); }
-
-  // Market detail panel
-  if(p.btc){ document.getElementById('m-btc-usd').textContent='$'+fmtNum(p.btc,0); }
-  if(btcTRY){ document.getElementById('m-btc-try').textContent=fmtNum(btcTRY,0)+' ₺'; }
-  if(p.gold){ document.getElementById('m-gold-oz').textContent='$'+fmtNum(p.gold,2); }
-  if(goldGramTRY){ document.getElementById('m-gold-try').textContent=fmtNum(goldGramTRY,2)+' ₺'; }
-  if(p.usd){ document.getElementById('m-usd-try').textContent=fmtNum(p.usd,4); }
-  if(p.eur){ document.getElementById('m-eur-try').textContent=fmtNum(p.eur,4); }
+  renderPrices(prev);
+  dot('d-prices','ok');
+  lg('تم تحديث الأسعار','ok');
+  const upd=document.getElementById('st-upd');
+  if(upd) upd.textContent='آخر تحديث: '+new Date().toLocaleTimeString('ar',{hour12:false});
 }
 
-// ─── RSS FETCH ────────────────────────────────────────────────
-async function fetchRSS(feedUrl){
+function flashVal(id, prev, curr){
+  const el=document.querySelector('#'+id+' .pi-val'); if(!el) return;
+  if(prev!=null && curr!=null && prev!==curr){
+    el.classList.remove('fu','fd'); void el.offsetWidth;
+    el.classList.add(curr>prev?'fu':'fd');
+  }
+}
+function renderPrices(prev){
+  const p=state.prices;
+  const gramTRY = (p.gold&&p.usd) ? p.gold*p.usd/31.1035 : null;
+  function setVal(id, txt){ const el=document.querySelector('#'+id+' .pi-val'); if(el) el.textContent=txt; }
+  setVal('p-btc',   p.btc    ? '$'+fmt(p.btc,0)      : '---'); flashVal('p-btc',   prev.btc,  p.btc);
+  setVal('p-gold',  gramTRY  ? fmt(gramTRY,0)+' ₺'   : '---');
+  setVal('p-usd',   p.usd    ? fmt(p.usd,3)+' ₺'     : '---'); flashVal('p-usd',   prev.usd,  p.usd);
+  setVal('p-eur',   p.eur    ? fmt(p.eur,3)+' ₺'     : '---');
+  setVal('p-btctry',p.btctry ? fmt(p.btctry,0)+' ₺'  : (p.btc&&p.usd ? fmt(p.btc*p.usd,0)+' ₺' : '---'));
+  setVal('p-goldoz',p.gold   ? '$'+fmt(p.gold,0)      : '---');
+  // Detail panel
+  const ids={btc:'m-btc',btctry:'m-btctry',gold:'m-goldoz',goldgr:'m-goldgr',usd:'m-usd',eur:'m-eur'};
+  if(p.btc)    { const e=document.getElementById(ids.btc);    if(e) e.textContent='$'+fmt(p.btc,0); }
+  if(p.btctry) { const e=document.getElementById(ids.btctry); if(e) e.textContent=fmt(p.btctry,0)+' ₺'; }
+  if(p.gold)   { const e=document.getElementById(ids.gold);   if(e) e.textContent='$'+fmt(p.gold,2); }
+  if(gramTRY)  { const e=document.getElementById(ids.goldgr); if(e) e.textContent=fmt(gramTRY,2)+' ₺'; }
+  if(p.usd)    { const e=document.getElementById(ids.usd);    if(e) e.textContent=fmt(p.usd,4); }
+  if(p.eur)    { const e=document.getElementById(ids.eur);    if(e) e.textContent=fmt(p.eur,4); }
+}
+
+// ════════════════════════════════════════════════════════════
+// RSS ENGINE — 4 LAYER FALLBACK
+// ════════════════════════════════════════════════════════════
+function parseXMLItems(xmlStr, sourceName){
+  const parser=new DOMParser();
+  const doc=parser.parseFromString(xmlStr,'application/xml');
+  // Check for parse error
+  if(doc.querySelector('parsererror')){
+    // try text/xml
+    const doc2=parser.parseFromString(xmlStr,'text/xml');
+    if(doc2.querySelector('parsererror')) throw new Error('XML parse failed');
+    return extractItems(doc2, sourceName);
+  }
+  return extractItems(doc, sourceName);
+}
+function extractItems(doc, sourceName){
+  const items=[];
+  const chanTitle=doc.querySelector('channel > title')?.textContent?.trim() || sourceName;
+  doc.querySelectorAll('item').forEach(node=>{
+    let title=(node.querySelector('title')?.textContent||'').replace(/<!\[CDATA\[|\]\]>/g,'').replace(/<[^>]+>/g,'').trim();
+    let desc=(node.querySelector('description')?.textContent||'').replace(/<!\[CDATA\[|\]\]>/g,'').replace(/<[^>]+>/g,'').trim().slice(0,250);
+    let link=node.querySelector('link')?.textContent?.trim()||'';
+    if(!link) link=node.querySelector('link')?.getAttribute('href')||'#';
+    // Sometimes link is next sibling text node
+    if(link===''){
+      const ln=node.querySelector('link');
+      if(ln && ln.nextSibling) link=ln.nextSibling.textContent.trim()||'#';
+    }
+    const pubDate=node.querySelector('pubDate')?.textContent||node.querySelector('updated')?.textContent||'';
+    if(title && title.length>2) items.push({title,desc,link,pubDate,source:sourceName||chanTitle});
+  });
+  return items;
+}
+
+async function fetchWithTimeout(url, ms=9000){
+  const ctrl=new AbortController();
+  const timer=setTimeout(()=>ctrl.abort(),ms);
   try {
-    // Try rss2json first (cleaner JSON)
-    const r=await fetch(RSS2JSON+encodeURIComponent(feedUrl));
+    const r=await fetch(url,{signal:ctrl.signal});
+    clearTimeout(timer);
+    return r;
+  } catch(e){ clearTimeout(timer); throw e; }
+}
+
+async function fetchRSS(feedUrl, sourceName){
+  // ── LAYER 1: rss2json.com ──
+  try {
+    const apiUrl=`https://api.rss2json.com/v1/api.json?count=30&rss_url=${encodeURIComponent(feedUrl)}`;
+    const r=await fetchWithTimeout(apiUrl,9000);
     if(r.ok){
       const d=await r.json();
-      if(d.status==='ok' && d.items) return d.items.map(i=>({
-        title:i.title, description:i.description||'', link:i.link,
-        pubDate:i.pubDate||i.published, source:d.feed?.title||feedUrl,
-      }));
+      if(d.status==='ok' && Array.isArray(d.items) && d.items.length>0){
+        lg(`✓ rss2json → ${sourceName} (${d.items.length})`,'ok');
+        return d.items.map(i=>({
+          title:(i.title||'').replace(/<[^>]+>/g,'').trim(),
+          desc:(i.description||'').replace(/<[^>]+>/g,'').trim().slice(0,250),
+          link:i.link||'#',
+          pubDate:i.pubDate||i.published||'',
+          source:sourceName,
+        })).filter(i=>i.title);
+      }
     }
-  } catch(e){}
-  // Fallback: allorigins + manual parse
+  } catch(e){ lg(`rss2json خطأ (${sourceName}): ${e.message}`,'warn'); }
+
+  // ── LAYER 2: corsproxy.io ──
   try {
-    const r=await fetch(PROXY+encodeURIComponent(feedUrl));
-    const d=await r.json();
-    const parser=new DOMParser();
-    const xml=parser.parseFromString(d.contents,'text/xml');
-    return Array.from(xml.querySelectorAll('item')).map(item=>({
-      title:(item.querySelector('title')?.textContent||'').replace(/<!\[CDATA\[|\]\]>/g,'').trim(),
-      description:(item.querySelector('description')?.textContent||'').replace(/<[^>]+>/g,'').replace(/<!\[CDATA\[|\]\]>/g,'').trim().slice(0,200),
-      link:item.querySelector('link')?.textContent||item.querySelector('link')?.getAttribute('href')||'#',
-      pubDate:item.querySelector('pubDate')?.textContent||'',
-      source:xml.querySelector('channel title')?.textContent||feedUrl,
-    }));
-  } catch(e){ return []; }
+    const proxyUrl=`https://corsproxy.io/?url=${encodeURIComponent(feedUrl)}`;
+    const r=await fetchWithTimeout(proxyUrl,9000);
+    if(r.ok){
+      const txt=await r.text();
+      if(txt.includes('<item>')||txt.includes('<entry>')){
+        const items=parseXMLItems(txt,sourceName);
+        if(items.length>0){ lg(`✓ corsproxy → ${sourceName} (${items.length})`,'ok'); return items; }
+      }
+    }
+  } catch(e){ lg(`corsproxy خطأ (${sourceName}): ${e.message}`,'warn'); }
+
+  // ── LAYER 3: allorigins raw ──
+  try {
+    const proxyUrl=`https://api.allorigins.win/raw?url=${encodeURIComponent(feedUrl)}`;
+    const r=await fetchWithTimeout(proxyUrl,9000);
+    if(r.ok){
+      const txt=await r.text();
+      if(txt.includes('<item>')||txt.includes('<entry>')){
+        const items=parseXMLItems(txt,sourceName);
+        if(items.length>0){ lg(`✓ allorigins/raw → ${sourceName} (${items.length})`,'ok'); return items; }
+      }
+    }
+  } catch(e){ lg(`allorigins/raw خطأ (${sourceName}): ${e.message}`,'warn'); }
+
+  // ── LAYER 4: allorigins JSON wrapper ──
+  try {
+    const proxyUrl=`https://api.allorigins.win/get?url=${encodeURIComponent(feedUrl)}`;
+    const r=await fetchWithTimeout(proxyUrl,9000);
+    if(r.ok){
+      const d=await r.json();
+      if(d.contents && (d.contents.includes('<item>')||d.contents.includes('<entry>'))){
+        const items=parseXMLItems(d.contents,sourceName);
+        if(items.length>0){ lg(`✓ allorigins/get → ${sourceName} (${items.length})`,'ok'); return items; }
+      }
+    }
+  } catch(e){ lg(`allorigins/get خطأ (${sourceName}): ${e.message}`,'warn'); }
+
+  lg(`✗ فشل كل المحاولات لـ ${sourceName}`,'err');
+  return [];
 }
 
-async function translateText(text){
+// ════════════════════════════════════════════════════════════
+// TRANSLATE
+// ════════════════════════════════════════════════════════════
+async function translate(text){
   try {
-    const r=await fetch(TRANSLATE_API+encodeURIComponent(text.slice(0,500))+'&langpair=en|ar');
+    const url=`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text.slice(0,450))}&langpair=en|ar`;
+    const r=await fetchWithTimeout(url,7000);
     const d=await r.json();
-    if(d.responseData?.translatedText) return d.responseData.translatedText;
+    const t=d.responseData?.translatedText||'';
+    if(t && t.length>5 && !t.includes('MYMEMORY WARNING') && !t.includes('INVALID LANGUAGE')) return t;
   } catch(e){}
   return null;
 }
 
-function timeAgo(dateStr){
-  if(!dateStr) return 'للتو';
-  const d=new Date(dateStr); const now=new Date();
-  const diff=Math.floor((now-d)/1000);
-  if(diff<60) return 'للتو';
-  if(diff<3600) return `منذ ${Math.floor(diff/60)} دقيقة`;
-  if(diff<86400) return `منذ ${Math.floor(diff/3600)} ساعة`;
-  return `منذ ${Math.floor(diff/86400)} يوم`;
+// ════════════════════════════════════════════════════════════
+// RENDER
+// ════════════════════════════════════════════════════════════
+function timeAgo(s){
+  if(!s) return '';
+  try {
+    const d=new Date(s); if(isNaN(d)) return '';
+    const diff=Math.floor((Date.now()-d)/1000);
+    if(diff<0) return 'للتو';
+    if(diff<60) return 'للتو';
+    if(diff<3600) return `${Math.floor(diff/60)}د`;
+    if(diff<86400) return `${Math.floor(diff/3600)}س`;
+    return `${Math.floor(diff/86400)}ي`;
+  } catch(e){ return ''; }
 }
-
-function srcClass(name){
+function srcCls(name){
   const n=(name||'').toLowerCase();
-  if(n.includes('jazeera')||n.includes('الجزيرة')) return 'src-aljazeera';
-  if(n.includes('bbc')) return 'src-bbc';
-  if(n.includes('rt')) return 'src-rt';
-  if(n.includes('reuters')) return 'src-reuters';
-  if(n.includes('sputnik')) return 'src-sputnik';
-  if(n.includes('ap')) return 'src-ap';
-  return 'src-other';
+  if(n.includes('جزيرة')||n.includes('jazeera')) return 's-aj';
+  if(n.includes('bbc')) return 's-bbc';
+  if(n.includes('rt ')) return 's-rt';
+  if(n.includes('reuters')) return 's-reu';
+  if(n.includes('ap ')) return 's-ap';
+  return 's-o';
 }
-
-function renderItems(items, containerId, countId){
-  const el=document.getElementById(containerId);
-  const cnt=document.getElementById(countId);
+function renderNews(items, listId, cntId){
+  const el=document.getElementById(listId);
+  const cnt=document.getElementById(cntId);
   if(!el) return;
+  if(cnt) cnt.textContent=items.length;
   if(!items.length){
-    el.innerHTML='<div class="news-error">لم يتم العثور على أخبار. حاول مرة أخرى.</div>';
-    if(cnt) cnt.textContent='0';
+    el.innerHTML='<div class="nerr">لم يتم العثور على أخبار مطابقة في الوقت الحالي<small>حاول الضغط على زر التحديث</small></div>';
     return;
   }
-  cnt && (cnt.textContent=items.length);
   el.innerHTML=items.map((item,i)=>`
-    <div class="news-item ${i<3?'new-item':''}">
-      <div class="news-time">
-        <span class="news-source ${srcClass(item.source)}">${item.source||'مصدر'}</span>
-        ${timeAgo(item.pubDate)}
+    <div class="ni${i<3?' nw':''}">
+      <div class="nt">
+        <span class="ns ${srcCls(item.source)}">${item.source}</span>
+        ${timeAgo(item.pubDate)?`<span>${timeAgo(item.pubDate)}</span>`:''}
       </div>
-      <div class="news-title"><a href="${item.link||'#'}" target="_blank">${item.title||'بلا عنوان'}</a></div>
-      ${item.description?`<div class="news-desc">${item.description}</div>`:''}
-      ${item.translated?`<div class="news-translated">${item.translated}</div>`:''}
-    </div>
-  `).join('');
+      <div class="ntitle"><a href="${(item.link||'').replace(/"/g,'%22')}" target="_blank" rel="noopener">${item.title}</a></div>
+      ${item.desc?`<div class="ndesc">${item.desc}</div>`:''}
+      ${item.tr?`<div class="ntr">🌐 ${item.tr}</div>`:''}
+    </div>`).join('');
 }
 
-// ─── NEWS LOADERS ─────────────────────────────────────────────
-async function loadIranNews(){
-  const refreshBtn=document.getElementById('iran-refresh-btn');
-  if(refreshBtn) refreshBtn.classList.add('spinning');
-  setStatus('dot-iran','loading');
-  document.getElementById('iran-list').innerHTML='<div class="loading-news">جاري تحميل أخبار إيران وإسرائيل <span class="loading-pulse"></span></div>';
-  log('تحميل أخبار إيران/إسرائيل/أمريكا...','info');
-  try {
-    const allItems=[];
-    for(const feed of FEEDS.arabic){
-      const items=await fetchRSS(feed.url);
-      items.forEach(i=>{i.source=feed.name; i.srcCls=feed.cls;});
-      const filtered=items.filter(i=>{
-        const t=(i.title+' '+i.description).toLowerCase();
-        return KEYWORDS.iran.some(k=>t.includes(k.toLowerCase()));
-      });
-      allItems.push(...filtered);
-    }
-    const sorted=allItems.sort((a,b)=>new Date(b.pubDate||0)-new Date(a.pubDate||0)).slice(0,20);
-    state.iranItems=sorted;
-    renderItems(sorted,'iran-list','iran-count');
-    updateTicker([...sorted.slice(0,5)],'iran');
-    setStatus('dot-iran','ok'); log(`تم تحميل ${sorted.length} خبر – إيران/إسرائيل`,'ok');
-  } catch(e){ setStatus('dot-iran','error'); log('خطأ: '+e.message,'err'); document.getElementById('iran-list').innerHTML='<div class="news-error">خطأ في التحميل. تأكد من اتصال الإنترنت.</div>'; }
-  if(refreshBtn) refreshBtn.classList.remove('spinning');
-}
+// ════════════════════════════════════════════════════════════
+// NEWS LOADERS
+// ════════════════════════════════════════════════════════════
+const NEWS_CFG = {
+  iran:  { feeds:FEEDS.arabic,  listId:'nl-iran',  cntId:'cnt-iran',  dotId:'d-iran',  rbId:'rb-iran',  kws:KW.iran,  doTranslate:false },
+  syria: { feeds:FEEDS.arabic,  listId:'nl-syria', cntId:'cnt-syria', dotId:'d-syria', rbId:'rb-syria', kws:KW.syria, doTranslate:false },
+  intl:  { feeds:FEEDS.english, listId:'nl-intl',  cntId:'cnt-intl',  dotId:'d-intl',  rbId:'rb-intl',  kws:KW.intl,  doTranslate:true  },
+};
 
-async function loadSyriaNews(){
-  const refreshBtn=document.getElementById('syria-refresh-btn');
-  if(refreshBtn) refreshBtn.classList.add('spinning');
-  setStatus('dot-syria','loading');
-  document.getElementById('syria-list').innerHTML='<div class="loading-news">جاري تحميل أخبار سوريا <span class="loading-pulse"></span></div>';
-  log('تحميل أخبار سوريا...','info');
-  try {
-    const allItems=[];
-    for(const feed of FEEDS.arabic){
-      const items=await fetchRSS(feed.url);
-      items.forEach(i=>{i.source=feed.name;});
-      const filtered=items.filter(i=>{
-        const t=(i.title+' '+i.description).toLowerCase();
-        return KEYWORDS.syria.some(k=>t.includes(k.toLowerCase()));
-      });
-      allItems.push(...filtered);
-    }
-    const sorted=allItems.sort((a,b)=>new Date(b.pubDate||0)-new Date(a.pubDate||0)).slice(0,20);
-    state.syriaItems=sorted;
-    renderItems(sorted,'syria-list','syria-count');
-    setStatus('dot-syria','ok'); log(`تم تحميل ${sorted.length} خبر – سوريا`,'ok');
-  } catch(e){ setStatus('dot-syria','error'); log('خطأ: '+e.message,'err'); document.getElementById('syria-list').innerHTML='<div class="news-error">خطأ في التحميل.</div>'; }
-  if(refreshBtn) refreshBtn.classList.remove('spinning');
-}
+async function loadNews(type){
+  const cfg=NEWS_CFG[type]; if(!cfg) return;
+  const rb=document.getElementById(cfg.rbId);
+  if(rb) rb.classList.add('spin');
+  dot(cfg.dotId,'load');
+  document.getElementById(cfg.listId).innerHTML=
+    `<div class="lnews"><span class="lp"></span>جاري تحميل الأخبار من ${cfg.feeds.length} مصادر...</div>`;
+  lg(`بدء تحميل: ${type}`,'info');
 
-async function loadIntlNews(){
-  const refreshBtn=document.getElementById('intl-refresh-btn');
-  if(refreshBtn) refreshBtn.classList.add('spinning');
-  setStatus('dot-intl','loading');
-  document.getElementById('intl-list').innerHTML='<div class="loading-news">جاري تحميل وترجمة الأخبار الدولية <span class="loading-pulse"></span></div>';
-  log('تحميل الأخبار الدولية وترجمتها...','info');
   try {
+    // Fetch all feeds in parallel
+    const results = await Promise.allSettled(cfg.feeds.map(f=>fetchRSS(f.url,f.name)));
     const allItems=[];
-    for(const feed of FEEDS.english){
-      const items=await fetchRSS(feed.url);
-      items.forEach(i=>{i.source=feed.name;});
-      const filtered=items.filter(i=>{
-        const t=(i.title+' '+i.description).toLowerCase();
-        return KEYWORDS.intl.some(k=>t.toLowerCase().includes(k.toLowerCase()));
-      });
-      allItems.push(...filtered);
-    }
-    const sorted=allItems.sort((a,b)=>new Date(b.pubDate||0)-new Date(a.pubDate||0)).slice(0,15);
+    results.forEach(r=>{ if(r.status==='fulfilled') allItems.push(...r.value); });
+    lg(`${type}: تم جلب ${allItems.length} عنصر إجمالاً`,'info');
 
-    // Translate titles (batched to save quota)
-    for(let i=0;i<Math.min(sorted.length,10);i++){
-      if(sorted[i].title && /[a-zA-Z]/.test(sorted[i].title)){
-        const tr=await translateText(sorted[i].title);
-        if(tr) sorted[i].translated=tr;
-        await new Promise(r=>setTimeout(r,200)); // Rate limit
+    // Filter by keywords
+    const filtered=allItems.filter(item=>{
+      const txt=(item.title+' '+(item.desc||'')).toLowerCase();
+      return cfg.kws.some(k=>txt.includes(k.toLowerCase()));
+    });
+    lg(`${type}: ${filtered.length} بعد الفلترة`,'info');
+
+    // Sort by date, deduplicate
+    const seen=new Set();
+    const final=filtered
+      .sort((a,b)=>new Date(b.pubDate||0)-new Date(a.pubDate||0))
+      .filter(item=>{
+        const k=(item.title||'').slice(0,50).toLowerCase();
+        if(seen.has(k)) return false; seen.add(k); return true;
+      })
+      .slice(0,25);
+
+    // Translate English items
+    if(cfg.doTranslate && final.length){
+      document.getElementById(cfg.listId).innerHTML=
+        `<div class="lnews"><span class="lp"></span>جاري ترجمة ${final.length} خبر...</div>`;
+      for(let i=0;i<Math.min(final.length,12);i++){
+        if(/[a-zA-Z]/.test(final[i].title)){
+          const input=final[i].title+(final[i].desc?' — '+final[i].desc.slice(0,100):'');
+          const tr=await translate(input);
+          if(tr) final[i].tr=tr;
+          await new Promise(r=>setTimeout(r,300));
+        }
       }
     }
-    state.intlItems=sorted;
-    renderItems(sorted,'intl-list','intl-count');
-    setStatus('dot-intl','ok'); log(`تم تحميل وترجمة ${sorted.length} خبر دولي`,'ok');
-  } catch(e){ setStatus('dot-intl','error'); log('خطأ: '+e.message,'err'); document.getElementById('intl-list').innerHTML='<div class="news-error">خطأ في التحميل.</div>'; }
-  if(refreshBtn) refreshBtn.classList.remove('spinning');
-}
 
-// ─── TICKER ───────────────────────────────────────────────────
-let tickerItems=[];
-function updateTicker(items, src){
-  tickerItems=items.slice(0,8);
-  const track=document.getElementById('ticker-track');
-  if(!track||!tickerItems.length) return;
-  const html=tickerItems.map(i=>`<span class="ticker-item"><span class="ti-src">${i.source}</span>${i.title}</span>`).join('');
-  track.innerHTML=html+html; // Duplicate for seamless loop
-}
-
-// ─── STREAMS ──────────────────────────────────────────────────
-function parseYTInput(input){
-  input=input.trim();
-  // Full URL
-  const ytUrl=/(?:youtube\.com\/(?:watch\?v=|embed\/|live\/|channel\/|@)|youtu\.be\/)([a-zA-Z0-9_-]+)/;
-  const chanId=/^UC[a-zA-Z0-9_-]{20,}$/;
-  const vidId=/^[a-zA-Z0-9_-]{11}$/;
-  const m=input.match(ytUrl);
-  if(m) return { type: m[1].startsWith('UC')?'channel':'video', id:m[1] };
-  if(chanId.test(input)) return { type:'channel', id:input };
-  if(vidId.test(input)) return { type:'video', id:input };
-  // @ handle - treat as channel name
-  if(input.startsWith('@')) return { type:'channelName', id:input.slice(1) };
-  return { type:'video', id:input };
-}
-
-function getEmbedUrl(parsed){
-  if(parsed.type==='channel') return `https://www.youtube.com/embed/live_stream?channel=${parsed.id}&autoplay=1&mute=1`;
-  if(parsed.type==='channelName') return `https://www.youtube.com/embed/live_stream?channel=${parsed.id}&autoplay=1&mute=1`;
-  return `https://www.youtube.com/embed/${parsed.id}?autoplay=1&mute=1`;
-}
-
-function renderStreams(){
-  const container=document.getElementById('streams-container');
-  if(!state.streams.length){
-    container.innerHTML='<div class="stream-empty"><span>📺</span>اضغط "إضافة قناة" لإضافة بث مباشر من يوتيوب</div>';
-    return;
+    renderNews(final, cfg.listId, cfg.cntId);
+    dot(cfg.dotId, final.length>0?'ok':'err');
+    lg(`${type}: ${final.length} خبر معروض ✓`,'ok');
+    if(type==='iran' && final.length) updateTicker(final.slice(0,8));
+  } catch(e){
+    dot(cfg.dotId,'err');
+    lg(`خطأ ${type}: ${e.message}`,'err');
+    document.getElementById(cfg.listId).innerHTML=
+      `<div class="nerr">خطأ في التحميل<small>${e.message}</small></div>`;
   }
-  container.className='cols-'+state.streamCols;
-  container.innerHTML=state.streams.map((s,i)=>`
-    <div class="stream-frame">
-      <iframe src="${s.embedUrl}" allow="autoplay; encrypted-media" allowfullscreen loading="lazy"></iframe>
-      <div class="stream-overlay">
-        <span class="stream-title">${s.name||'بث مباشر'}</span>
-        <button class="stream-del-btn" onclick="removeStream(${i})" title="حذف">✕</button>
-      </div>
-    </div>
-  `).join('');
+  if(rb) rb.classList.remove('spin');
 }
 
-function setStreamCols(n){
-  state.streamCols=n;
-  document.querySelectorAll('#streams-head .sec-btn').forEach((b,i)=>b.classList.toggle('active',i===n-1));
-  if(state.streams.length) document.getElementById('streams-container').className='cols-'+n;
-  log(`تم تغيير تخطيط البث إلى ${n} عمود`,'info');
+// ════════════════════════════════════════════════════════════
+// TICKER
+// ════════════════════════════════════════════════════════════
+function updateTicker(items){
+  if(!items.length) return;
+  const el=document.getElementById('ticker'); if(!el) return;
+  const html=items.map(i=>`<span class="ticker-item"><span class="ti-src">${i.source}</span>${i.title}</span>`).join('');
+  el.innerHTML=html+html;
 }
 
-function removeStream(i){
-  state.streams.splice(i,1);
+// ════════════════════════════════════════════════════════════
+// STREAMS
+// ════════════════════════════════════════════════════════════
+function ytEmbed(input){
+  input=(input||'').trim();
+  const urlMatch=input.match(/(?:youtube\.com\/(?:watch\?v=|live\/|@|channel\/)|youtu\.be\/)([a-zA-Z0-9_-]+)/);
+  if(urlMatch){
+    const id=urlMatch[1];
+    return /^UC[a-zA-Z0-9_-]{20,}$/.test(id)
+      ? `https://www.youtube.com/embed/live_stream?channel=${id}&autoplay=1&mute=1`
+      : `https://www.youtube.com/embed/${id}?autoplay=1&mute=1`;
+  }
+  if(/^UC[a-zA-Z0-9_-]{20,}$/.test(input))
+    return `https://www.youtube.com/embed/live_stream?channel=${input}&autoplay=1&mute=1`;
+  if(/^[a-zA-Z0-9_-]{11}$/.test(input))
+    return `https://www.youtube.com/embed/${input}?autoplay=1&mute=1`;
+  return `https://www.youtube.com/embed/live_stream?channel=${input}&autoplay=1&mute=1`;
+}
+function renderStreams(){
+  const c=document.getElementById('sc');
+  c.className='c'+state.cols;
+  if(!state.streams.length){
+    c.innerHTML='<div class="sem"><span>📺</span>اضغط "إضافة قناة" لإضافة بث مباشر</div>'; return;
+  }
+  c.innerHTML=state.streams.map((s,i)=>`
+    <div class="sf">
+      <iframe src="${s.url}" allow="autoplay;encrypted-media;fullscreen" allowfullscreen loading="lazy"></iframe>
+      <div class="sov"><span class="sov-t">${s.name}</span><button class="sdel" onclick="removeStream(${i})" title="حذف">✕</button></div>
+    </div>`).join('');
+}
+function setCols(n){
+  state.cols=n;
+  document.querySelectorAll('.sec-ctrl .sbtn').forEach((b,i)=>{ if(i<3) b.classList.toggle('act',i===n-1); });
   renderStreams();
-  log('تم حذف البث المباشر','warn');
 }
-
-function showAddStreamModal(){ document.getElementById('modal-overlay').classList.add('show'); }
-function closeModal(){ document.getElementById('modal-overlay').classList.remove('show'); document.getElementById('m-url').value=''; document.getElementById('m-name').value=''; }
-
-function confirmAddStream(){
-  const input=document.getElementById('m-url').value.trim();
-  const name=document.getElementById('m-name').value.trim();
+function removeStream(i){ state.streams.splice(i,1); renderStreams(); }
+function toggleS(){
+  state.vis=!state.vis;
+  ['sc','asb'].forEach(id=>{ const e=document.getElementById(id); if(e) e.style.display=state.vis?'':'none'; });
+  const tog=document.getElementById('tog'); if(tog) tog.textContent=state.vis?'إخفاء':'إظهار';
+}
+function openModal(){ document.getElementById('mo').classList.add('show'); }
+function closeModal(){
+  document.getElementById('mo').classList.remove('show');
+  ['m-url','m-name'].forEach(id=>{ const e=document.getElementById(id); if(e) e.value=''; });
+}
+function confirmAdd(){
+  const urlEl=document.getElementById('m-url');
+  const nameEl=document.getElementById('m-name');
+  const input=(urlEl?.value||'').trim();
+  const name=(nameEl?.value||'').trim()||'بث مباشر';
   if(!input){ alert('الرجاء إدخال رابط أو معرّف القناة'); return; }
-  const parsed=parseYTInput(input);
-  const embedUrl=getEmbedUrl(parsed);
-  state.streams.push({ embedUrl, name:name||'بث مباشر', parsed });
-  renderStreams();
-  closeModal();
-  toast('✅ تم إضافة القناة','تم إضافة '+(name||'البث المباشر')+' بنجاح');
-  log('تم إضافة قناة: '+(name||embedUrl),'ok');
-}
-
-function addPreset(channelId, name){
-  const embedUrl=`https://www.youtube.com/embed/live_stream?channel=${channelId}&autoplay=1&mute=1`;
-  state.streams.push({ embedUrl, name, parsed:{type:'channel',id:channelId} });
-  renderStreams();
-  closeModal();
+  state.streams.push({ url:ytEmbed(input), name });
+  renderStreams(); closeModal();
   toast('✅ '+name,'تم إضافة القناة بنجاح');
-  log('تم إضافة قناة: '+name,'ok');
+  lg('إضافة: '+name,'ok');
+}
+function addPreset(chId, name){
+  state.streams.push({ url:`https://www.youtube.com/embed/live_stream?channel=${chId}&autoplay=1&mute=1`, name });
+  renderStreams(); closeModal();
+  toast('✅ '+name,'تم إضافة القناة');
+  lg('إضافة: '+name,'ok');
 }
 
-function toggleStreams(){
-  state.streamsVisible=!state.streamsVisible;
-  const c=document.getElementById('streams-container');
-  const ab=document.getElementById('add-stream-bar');
-  const btn=document.getElementById('toggle-streams-btn');
-  c.style.display=state.streamsVisible?'':'none';
-  ab.style.display=state.streamsVisible?'':'none';
-  btn.textContent=state.streamsVisible?'إخفاء':'إظهار';
-}
+// ════════════════════════════════════════════════════════════
+// AUTO REFRESH
+// ════════════════════════════════════════════════════════════
+setInterval(fetchPrices, 30000);
+setInterval(()=>{ loadNews('iran'); loadNews('syria'); loadNews('intl'); }, 180000);
 
-// ─── AUTO REFRESH ─────────────────────────────────────────────
-const REFRESH_MS=3*60*1000;
-let priceInterval, newsInterval;
-
-function startAutoRefresh(){
-  clearInterval(priceInterval);
-  clearInterval(newsInterval);
-  priceInterval=setInterval(fetchPrices, 30*1000);
-  newsInterval=setInterval(()=>{
-    loadIranNews();
-    loadSyriaNews();
-    loadIntlNews();
-  }, REFRESH_MS);
-}
-
-// ─── INIT ─────────────────────────────────────────────────────
-function init(){
-  log('تهيئة غرفة العمليات الإخبارية...','ok');
+// ════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded',()=>{
+  lg('تهيئة غرفة العمليات...','ok');
   fetchPrices();
-  setTimeout(loadIranNews, 200);
-  setTimeout(loadSyriaNews, 800);
-  setTimeout(loadIntlNews, 1400);
-  startAutoRefresh();
-  toast('🚀 مرحباً','غرفة العمليات جاهزة. يتم تحديث الأخبار تلقائياً كل 3 دقائق.',4000);
-}
-
-window.addEventListener('DOMContentLoaded', init);
-
-// Enter key on modal
+  loadNews('iran');
+  setTimeout(()=>loadNews('syria'), 700);
+  setTimeout(()=>loadNews('intl'), 1400);
+  toast('🚀 جاري التحميل','يتم تحميل الأخبار من جميع المصادر...',4000);
+});
 document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
 </script>
 </body>
